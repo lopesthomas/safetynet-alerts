@@ -3,6 +3,8 @@ package com.safetynet.safetynet_alerts.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.swing.text.html.parser.Entity;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import com.safetynet.safetynet_alerts.model.FireStation;
 import com.safetynet.safetynet_alerts.model.Person;
 import com.safetynet.safetynet_alerts.repository.FireStationRepository;
 import com.safetynet.safetynet_alerts.repository.PersonRepository;
+import com.safetynet_alerts.dto.FireStationResponseDTO;
 
 @Service
 public class FireStationService {
@@ -33,7 +36,7 @@ public class FireStationService {
         
     }
     
-    public List<Person> getPersonsCoveredByStation(int stationNumber){
+    public FireStationResponseDTO getPersonsCoveredByStation(int stationNumber){
          // Récupère les adresses couvertes par cette station
         List<String> coveredAddresses = fireStationRepository.getAllFireStations().stream()
                 .filter(f -> f.getStation() == stationNumber)
@@ -53,7 +56,7 @@ public class FireStationService {
         System.out.println("Adults: " + adults);
         System.out.println("Childrens: " + children);
         
-        return persons;
+        return new FireStationResponseDTO(persons, adults, children);
     }
 
      

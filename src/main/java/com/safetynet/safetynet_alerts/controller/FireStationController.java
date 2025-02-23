@@ -1,13 +1,11 @@
 package com.safetynet.safetynet_alerts.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynet.safetynet_alerts.model.FireStation;
-import com.safetynet.safetynet_alerts.model.Person;
 import com.safetynet.safetynet_alerts.service.FireStationService;
+import com.safetynet_alerts.dto.FireStationResponseDTO;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +27,7 @@ public class FireStationController {
 
 
     @GetMapping
-    public List<Person> getCoveredPersons(@RequestParam int stationNumber) {
+    public FireStationResponseDTO getCoveredPersons(@RequestParam int stationNumber) {
         //TODO: process POST request
         return fireStationService.getPersonsCoveredByStation(stationNumber);
     }
