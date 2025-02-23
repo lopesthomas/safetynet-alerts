@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynet.safetynet_alerts.model.FireStation;
 import com.safetynet.safetynet_alerts.model.Person;
+import com.safetynet.safetynet_alerts.service.FireStationService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,12 +24,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RestController
 @RequestMapping("/firestation")
 public class FireStationController {
+    @Autowired
+    private FireStationService fireStationService;
 
 
     @GetMapping
     public List<Person> getCoveredPersons(@RequestParam int stationNumber) {
         //TODO: process POST request
-        return null;
+        return fireStationService.getPersonsCoveredByStation(stationNumber);
     }
 
     @PostMapping
