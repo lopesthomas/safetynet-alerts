@@ -3,8 +3,6 @@ package com.safetynet.safetynet_alerts.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.swing.text.html.parser.Entity;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,32 +30,41 @@ public class FireStationService {
     return fireStationRepository.getAllFireStations().stream()
             .filter(f -> f.getStation() == stationNumber)
             .collect(Collectors.toList());
-        
-        
     }
-    
+
+    public void addFireStation(FireStation fireStation) {
+        fireStationRepository.addFireStation(fireStation);
+    }
+
+    public boolean updateFireStation(FireStation fireStation) {
+        return fireStationRepository.updateFireStation(fireStation);
+    }
+
+    public boolean deleteFireStation(String address) {
+        return fireStationRepository.deleteFireStation(address);
+    }
+
     public FireStationResponseDTO getPersonsCoveredByStation(int stationNumber){
-         // Récupère les adresses couvertes par cette station
-        List<String> coveredAddresses = fireStationRepository.getAllFireStations().stream()
-                .filter(f -> f.getStation() == stationNumber)
-                .map(FireStation::getAddress)
-                .collect(Collectors.toList());
+        // Récupère les adresses couvertes par cette station
+       List<String> coveredAddresses = fireStationRepository.getAllFireStations().stream()
+               .filter(f -> f.getStation() == stationNumber)
+               .map(FireStation::getAddress)
+               .collect(Collectors.toList());
 
-        // Filtrer les personnes habitant ces adresses
-        List<Person> persons = personRepository.getAllPersons().stream()
-                .filter(p -> coveredAddresses.contains(p.getAddress()))
-                .collect(Collectors.toList());
+       // Filtrer les personnes habitant ces adresses
+       List<Person> persons = personRepository.getAllPersons().stream()
+               .filter(p -> coveredAddresses.contains(p.getAddress()))
+               .collect(Collectors.toList());
 
-        // Compter adultes et enfants
-        int adults = (int) persons.stream().filter(p -> personService.getAge(p.getFirstName(), p.getLastName()) >= 18).count();
-        int children = persons.size() - adults;
+       // Compter adultes et enfants
+       int adults = (int) persons.stream().filter(p -> personService.getAge(p.getFirstName(), p.getLastName()) >= 18).count();
+       int children = persons.size() - adults;
 
-        System.out.println("StationNumber: " + stationNumber);
-        System.out.println("Adults: " + adults);
-        System.out.println("Childrens: " + children);
-        
-        return new FireStationResponseDTO(persons, adults, children);
-    }
-
+       System.out.println("StationNumber: " + stationNumber);
+       System.out.println("Adults: " + adults);
+       System.out.println("Childrens: " + children);
+       
+       return new FireStationResponseDTO(persons, adults, children);
+   }
      
 }

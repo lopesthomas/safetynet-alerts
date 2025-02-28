@@ -1,6 +1,9 @@
 package com.safetynet.safetynet_alerts.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynet.safetynet_alerts.model.FireStation;
@@ -32,25 +35,36 @@ public class FireStationController {
         return fireStationService.getPersonsCoveredByStation(stationNumber);
     }
 
-    @PostMapping
-    public FireStation createFireStation(@RequestBody FireStation fireStation) {
+    @GetMapping("/all")
+    public List<FireStation> getFireStations() {
         //TODO: process POST request
-        
-        return fireStation;
+        return fireStationService.getFireStations();
     }
 
-    @PutMapping("/{id}")
-    public FireStation updateFireStation(@PathVariable String id, @RequestBody FireStation firestation) {
+    @PostMapping
+    public ResponseEntity<String> createFireStation(@RequestBody FireStation fireStation) {
+        //TODO: process POST request
+        fireStationService.addFireStation(fireStation);
+        return ResponseEntity.ok("Created Firestation");
+    }
+
+    @PutMapping
+    public ResponseEntity<String> updateFireStation(@RequestBody FireStation firestation) {
         //TODO: process PUT request
-        
-        return firestation;
+        boolean updated = fireStationService.updateFireStation(firestation);
+        if (updated) {
+            return ResponseEntity.ok("Updated Firestation");
+        }
+        return ResponseEntity.notFound().build();
     }
     
-    @DeleteMapping("/{id}")
-    public void deleteFireStation(@PathVariable String id) {
-        
+    @DeleteMapping("/{address}")
+    public ResponseEntity<String> deleteFireStation(@PathVariable String adress) {
+        boolean deleted = fireStationService.deleteFireStation(adress);
+        if (deleted) {
+            return ResponseEntity.ok("Delete Firestation");
+        }
+        return ResponseEntity.notFound().build();
     }
-    
-    
 
 }
