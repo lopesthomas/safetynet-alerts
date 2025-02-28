@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FireStationResponseDTO {
-    @JsonProperty("persons_covered")
+    @JsonProperty("personsCovered")
     private List<Person> coveredPersons;
 
-    @JsonProperty("number_of_adults")
+    @JsonProperty("numberOfAdults")
     private int adultCount;
 
-    @JsonProperty("number_of_children")
+    @JsonProperty("numberOfChildren")
     private int childCount;
 }
