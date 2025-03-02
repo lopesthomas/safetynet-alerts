@@ -6,11 +6,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.safetynet.safetynet_alerts.dto.FireStationResponseDTO;
 import com.safetynet.safetynet_alerts.model.FireStation;
 import com.safetynet.safetynet_alerts.model.Person;
 import com.safetynet.safetynet_alerts.repository.FireStationRepository;
 import com.safetynet.safetynet_alerts.repository.PersonRepository;
-import com.safetynet_alerts.dto.FireStationResponseDTO;
 
 @Service
 public class FireStationService {

@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.safetynet.safetynet_alerts.dto.FireStationResponseDTO;
 import com.safetynet.safetynet_alerts.model.FireStation;
 import com.safetynet.safetynet_alerts.service.FireStationService;
-import com.safetynet_alerts.dto.FireStationResponseDTO;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
