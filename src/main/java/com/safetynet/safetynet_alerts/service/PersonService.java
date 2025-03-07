@@ -37,16 +37,17 @@ public class PersonService {
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
 
-    public void addPerson(Person person){
-        personRepository.addPerson(person);
+    public Person createPerson(Person person){
+        personRepository.createPerson(person);
+        return person;
     }
 
-    public boolean updatePerson(Person person){
-        return personRepository.updatePerson(person);
+    public Person updatePerson(Person person){
+        return personRepository.updatePerson(person).orElseThrow(() -> new IllegalArgumentException("Person not found"));
     }
 
-    public boolean deletePerson(String firstName, String lastName) {
-        return personRepository.deletePerson(firstName, lastName);
+    public void deletePerson(String firstName, String lastName) {
+        personRepository.deletePerson(firstName, lastName).orElseThrow(() -> new IllegalArgumentException("Person not found"));
     }
 
     public List<ChildAlertDTO> getChildrenAtAddress(String address) {

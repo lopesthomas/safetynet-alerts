@@ -37,29 +37,21 @@ public class PersonController {
     
 
     @PostMapping
-    public ResponseEntity<String> postMethodName(@RequestBody Person person) {
-        //TODO: process POST request
-        personService.addPerson(person);
-        return ResponseEntity.ok("Created Person");
+    public ResponseEntity<Person> createPerson(@RequestBody Person person) {
+        Person createdPerson = personService.createPerson(person);
+        return ResponseEntity.ok(createdPerson);
     }
 
     @PutMapping
-    public ResponseEntity<String> updatePerson(@RequestBody Person person) {
-        //TODO: process PUT request
-        boolean update = personService.updatePerson(person);
-        if(update){
-            return ResponseEntity.ok("Updated Person");
-        }
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<Person> updatePerson(@RequestBody Person person) {
+        Person updatedPerson = personService.updatePerson(person);
+        return ResponseEntity.ok(updatedPerson);
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deletePerson(@RequestParam String firstName, @RequestParam String lastName) {
-        boolean delete = personService.deletePerson(firstName, lastName);
-        if(delete){
-            return ResponseEntity.ok("Deleted Person");
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Void> deletePerson(@RequestParam String firstName, @RequestParam String lastName) {
+        personService.deletePerson(firstName, lastName);
+        return ResponseEntity.noContent().build();
     }
     
 }

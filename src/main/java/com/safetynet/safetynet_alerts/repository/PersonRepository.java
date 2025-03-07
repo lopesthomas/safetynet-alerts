@@ -1,6 +1,7 @@
 package com.safetynet.safetynet_alerts.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
@@ -25,11 +26,12 @@ public class PersonRepository {
                 .collect(Collectors.toList());
     }
 
-    public void addPerson(Person person) {
+    public Person createPerson(Person person) {
         dataLoader.getPersons().add(person);
+        return person;
     }
 
-    public boolean updatePerson(Person person) {
+    public Optional<Person> updatePerson(Person person) {
         for (Person p : dataLoader.getPersons()) {
             if (p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {
                 p.setAddress(person.getAddress());
@@ -38,13 +40,18 @@ public class PersonRepository {
                 p.setPhone(person.getPhone());
                 p.setEmail(person.getEmail());
 
-                return true;
+                return Optional.of(p);
             }
         }
-        return false;
+        return Optional.empty();
     }
 
-    public boolean deletePerson(String firstName, String lastName) {
-        return dataLoader.getPersons().removeIf(p -> p.getFirstName().equals(firstName) && p.getLastName().equals(lastName));
+    public Optional<Boolean> deletePerson(String firstName, String lastName) {
+        boolean deleted = dataLoader.getPersons().removeIf(p -> p.getFirstName().equals(firstName) && p.getLastName().equals(lastName));
+        if (deleted) {
+            return Optional.of(true);
+        } else {
+            return Optional.empty();
+        }
     }
 }
