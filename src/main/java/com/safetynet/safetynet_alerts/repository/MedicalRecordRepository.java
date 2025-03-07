@@ -1,6 +1,7 @@
 package com.safetynet.safetynet_alerts.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -18,24 +19,30 @@ public class MedicalRecordRepository {
         return dataLoader.getMedicalrecords();
     }
 
-    public void addMedicalRecord(MedicalRecord medicalRecord) {
+    public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord) {
         dataLoader.getMedicalrecords().add(medicalRecord);
+        return medicalRecord;
     }
 
-    public boolean updateMedicalRecord(MedicalRecord medicalRecord) {
+    public Optional<MedicalRecord> updateMedicalRecord(MedicalRecord medicalRecord) {
         for (MedicalRecord mr : dataLoader.getMedicalrecords()) {
             if (mr.getFirstName().equals(medicalRecord.getFirstName()) && mr.getLastName().equals(medicalRecord.getLastName())) {
                 mr.setBirthdate(medicalRecord.getBirthdate());
                 mr.setMedications(medicalRecord.getMedications());
                 mr.setAllergies(medicalRecord.getAllergies());
 
-                return true;
+                return Optional.of(mr);
             }
         }
-        return false;
+        return Optional.empty();
     }
 
-    public boolean deleteMedicalRecord(String firstName, String lastName) {
-        return dataLoader.getMedicalrecords().removeIf(mr -> mr.getFirstName().equals(firstName) && mr.getLastName().equals(lastName));
+    public Optional<Boolean> deleteMedicalRecord(String firstName, String lastName) {
+        boolean deleted = dataLoader.getMedicalrecords().removeIf(mr -> mr.getFirstName().equals(firstName) && mr.getLastName().equals(lastName));
+        if (deleted) {
+            return Optional.of(true);
+        } else {
+            return Optional.empty();
+        }
     }
 }

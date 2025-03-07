@@ -42,27 +42,27 @@ public class FireStationController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createFireStation(@RequestBody FireStation fireStation) {
+    public ResponseEntity<FireStation> createFireStation(@RequestBody FireStation fireStation) {
         //TODO: process POST request
-        fireStationService.addFireStation(fireStation);
-        return ResponseEntity.ok("Created Firestation");
+        FireStation createdFireStation = fireStationService.addFireStation(fireStation);
+        return ResponseEntity.ok(createdFireStation);
     }
 
     @PutMapping
-    public ResponseEntity<String> updateFireStation(@RequestBody FireStation firestation) {
+    public ResponseEntity<FireStation> updateFireStation(@RequestBody FireStation firestation) {
         //TODO: process PUT request
-        boolean updated = fireStationService.updateFireStation(firestation);
-        if (updated) {
-            return ResponseEntity.ok("Updated Firestation");
+        FireStation updatedFireStation = fireStationService.updateFireStation(firestation);
+        if (updatedFireStation != null) {
+            return ResponseEntity.ok(updatedFireStation);
         }
         return ResponseEntity.notFound().build();
     }
     
     @DeleteMapping("/{address}")
-    public ResponseEntity<String> deleteFireStation(@PathVariable String adress) {
-        boolean deleted = fireStationService.deleteFireStation(adress);
+    public ResponseEntity<Void> deleteFireStation(@PathVariable String address) {
+        boolean deleted = fireStationService.deleteFireStation(address);
         if (deleted) {
-            return ResponseEntity.ok("Delete Firestation");
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
     }

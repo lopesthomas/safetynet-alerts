@@ -25,18 +25,19 @@ public class FireStationRepository {
                 .collect(Collectors.toList());
     }
 
-    public void addFireStation(FireStation fireStation) {
+    public FireStation addFireStation(FireStation fireStation) {
         dataLoader.getFirestations().add(fireStation);
+        return fireStation;
     }
 
-    public boolean updateFireStation(FireStation fireStation){
+    public FireStation updateFireStation(FireStation fireStation){
         for (FireStation fs : dataLoader.getFirestations()) {
             if (fs.getAddress().equals(fireStation.getAddress())){
                 fs.setStation(fireStation.getStation());
-                return true;
+                return fs;
             }
         }
-        return false;
+        return null;
     }
 
     public boolean deleteFireStation(String address) {

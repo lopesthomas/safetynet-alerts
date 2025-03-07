@@ -34,27 +34,20 @@ public class MedicalRecordController {
     }
     
     @PostMapping
-    public ResponseEntity<String> addMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-        medicalRecordService.addMedicalRecord(medicalRecord);
-        return ResponseEntity.ok("Created MedicalRecord");
+    public ResponseEntity<MedicalRecord> addMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+        MedicalRecord createdMedicalRecord = medicalRecordService.addMedicalRecord(medicalRecord);
+        return ResponseEntity.ok(createdMedicalRecord);
     }
     
     @PutMapping
-    public ResponseEntity<String> updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-        boolean updated = medicalRecordService.updateMedicalRecord(medicalRecord);
-        if(updated) {
-            return ResponseEntity.ok("Updated MedicalRecord");
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<MedicalRecord> updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+        MedicalRecord updatedMedicalRecord = medicalRecordService.updateMedicalRecord(medicalRecord);
+        return ResponseEntity.ok(updatedMedicalRecord);
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteMedicalRecord(@RequestParam String firstName, @RequestParam String lastName) {
-        boolean deleted = medicalRecordService.deleteMedicalRecord(firstName, lastName);
-        if(deleted) {
-            return ResponseEntity.ok("Deleted MedicalRecord");
-        }
-        
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Void> deleteMedicalRecord(@RequestParam String firstName, @RequestParam String lastName) {
+        medicalRecordService.deleteMedicalRecord(firstName, lastName);
+        return ResponseEntity.noContent().build();
     }
 }

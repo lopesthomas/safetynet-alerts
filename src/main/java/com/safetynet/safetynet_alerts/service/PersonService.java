@@ -3,10 +3,14 @@ package com.safetynet.safetynet_alerts.service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.safetynet.safetynet_alerts.dto.ChildAlertDTO;
 import com.safetynet.safetynet_alerts.model.Person;
 import com.safetynet.safetynet_alerts.repository.MedicalRecordRepository;
 import com.safetynet.safetynet_alerts.repository.PersonRepository;
@@ -43,5 +47,26 @@ public class PersonService {
 
     public boolean deletePerson(String firstName, String lastName) {
         return personRepository.deletePerson(firstName, lastName);
+    }
+
+    public List<ChildAlertDTO> getChildrenAtAddress(String address) {
+        List<Person> personsAtAddress = personRepository.getAllPersons().stream()
+                .filter(p -> p.getAddress().equalsIgnoreCase(address))
+                .collect(Collectors.toList());
+
+        List<ChildAlertDTO> children = new ArrayList<>();
+
+        for (Person person : personsAtAddress) {
+            int age = getAge(person.getFirstName(), person.getLastName());
+            if (age <= 18) {
+                List<String> houseMembers = personsAtAddress.stream()
+                        .filter(p -> !p.equals(person))
+                        .map(p -> p.getFirstName() + " " + p.getLastName())
+                        .collect(Collectors.toList());
+
+                children.add(new ChildAlertDTO(person.getFirstName(), person.getLastName(), age, houseMembers));
+            }
+        }
+        return children;
     }
 }

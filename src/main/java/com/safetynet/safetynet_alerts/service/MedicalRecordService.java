@@ -11,15 +11,16 @@ public class MedicalRecordService {
     @Autowired
     private MedicalRecordRepository medicalRecordRepository;
 
-    public void addMedicalRecord(MedicalRecord medicalRecord) {
+    public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord) {
         medicalRecordRepository.addMedicalRecord(medicalRecord);
+        return medicalRecord;
     }
 
-    public boolean updateMedicalRecord(MedicalRecord medicalRecord) {
-        return medicalRecordRepository.updateMedicalRecord(medicalRecord);
+    public MedicalRecord updateMedicalRecord(MedicalRecord medicalRecord) {
+        return medicalRecordRepository.updateMedicalRecord(medicalRecord).orElseThrow(() -> new IllegalArgumentException("MedicalRecord not found"));
     }
 
-    public boolean deleteMedicalRecord(String firstName, String lastName) {
-        return medicalRecordRepository.deleteMedicalRecord(firstName, lastName);
+    public void deleteMedicalRecord(String firstName, String lastName) {
+        medicalRecordRepository.deleteMedicalRecord(firstName, lastName).orElseThrow(() -> new IllegalArgumentException("MedicalRecord not found"));
     }
 }

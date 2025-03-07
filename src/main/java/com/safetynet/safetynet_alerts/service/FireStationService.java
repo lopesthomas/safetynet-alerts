@@ -32,11 +32,11 @@ public class FireStationService {
             .collect(Collectors.toList());
     }
 
-    public void addFireStation(FireStation fireStation) {
-        fireStationRepository.addFireStation(fireStation);
+    public FireStation addFireStation(FireStation fireStation) {
+       return fireStationRepository.addFireStation(fireStation);
     }
 
-    public boolean updateFireStation(FireStation fireStation) {
+    public FireStation updateFireStation(FireStation fireStation) {
         return fireStationRepository.updateFireStation(fireStation);
     }
 
@@ -66,5 +66,17 @@ public class FireStationService {
        
        return new FireStationResponseDTO(persons, adults, children);
    }
+
+    public List<String> getPhoneNumberByStationNumber (int stationNumber){
+        List<String> coveredAddresses = fireStationRepository.getAllFireStations().stream()
+        .filter(f -> f.getStation() == stationNumber)
+        .map(FireStation::getAddress)
+        .collect(Collectors.toList());
+
+        return personRepository.getAllPersons().stream()
+                .filter(p -> coveredAddresses.contains(p.getAddress()))
+                .map(Person::getPhone)
+                .collect(Collectors.toList());
+    }
      
 }
