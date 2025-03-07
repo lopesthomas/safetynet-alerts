@@ -21,6 +21,7 @@ public class MedicalRecordRepository {
 
     public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord) {
         dataLoader.getMedicalrecords().add(medicalRecord);
+        dataLoader.saveData();
         return medicalRecord;
     }
 
@@ -30,7 +31,7 @@ public class MedicalRecordRepository {
                 mr.setBirthdate(medicalRecord.getBirthdate());
                 mr.setMedications(medicalRecord.getMedications());
                 mr.setAllergies(medicalRecord.getAllergies());
-
+                dataLoader.saveData();
                 return Optional.of(mr);
             }
         }
@@ -40,6 +41,7 @@ public class MedicalRecordRepository {
     public Optional<Boolean> deleteMedicalRecord(String firstName, String lastName) {
         boolean deleted = dataLoader.getMedicalrecords().removeIf(mr -> mr.getFirstName().equals(firstName) && mr.getLastName().equals(lastName));
         if (deleted) {
+            dataLoader.saveData();
             return Optional.of(true);
         } else {
             return Optional.empty();

@@ -27,7 +27,10 @@ public class PersonRepository {
     }
 
     public Person createPerson(Person person) {
-        dataLoader.getPersons().add(person);
+        boolean createdPerson = dataLoader.getPersons().add(person);
+        if(createdPerson) {
+            dataLoader.saveData();
+        }
         return person;
     }
 
@@ -39,6 +42,7 @@ public class PersonRepository {
                 p.setZip(person.getZip());
                 p.setPhone(person.getPhone());
                 p.setEmail(person.getEmail());
+                dataLoader.saveData();
 
                 return Optional.of(p);
             }
@@ -49,6 +53,7 @@ public class PersonRepository {
     public Optional<Boolean> deletePerson(String firstName, String lastName) {
         boolean deleted = dataLoader.getPersons().removeIf(p -> p.getFirstName().equals(firstName) && p.getLastName().equals(lastName));
         if (deleted) {
+            dataLoader.saveData();
             return Optional.of(true);
         } else {
             return Optional.empty();

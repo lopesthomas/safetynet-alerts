@@ -34,4 +34,14 @@ public class DataLoader {
             e.printStackTrace();
         }
     }
+
+    public void saveData() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            File file = new File("src/main/resources/data.json");
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

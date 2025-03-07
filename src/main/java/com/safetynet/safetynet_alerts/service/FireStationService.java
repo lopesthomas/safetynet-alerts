@@ -41,7 +41,7 @@ public class FireStationService {
     }
 
     public boolean deleteFireStation(String address) {
-        return fireStationRepository.deleteFireStation(address);
+        return fireStationRepository.deleteFireStation(address).orElseThrow(() -> new IllegalArgumentException("FireStation not found"));
     }
 
     public FireStationResponseDTO getPersonsCoveredByStation(int stationNumber){

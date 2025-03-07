@@ -38,8 +38,7 @@ public class PersonService {
     }
 
     public Person createPerson(Person person){
-        personRepository.createPerson(person);
-        return person;
+        return personRepository.createPerson(person);
     }
 
     public Person updatePerson(Person person){

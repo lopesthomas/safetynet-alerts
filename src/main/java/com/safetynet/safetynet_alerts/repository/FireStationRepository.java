@@ -1,6 +1,7 @@
 package com.safetynet.safetynet_alerts.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
@@ -26,7 +27,10 @@ public class FireStationRepository {
     }
 
     public FireStation addFireStation(FireStation fireStation) {
-        dataLoader.getFirestations().add(fireStation);
+        boolean createdFireStation = dataLoader.getFirestations().add(fireStation);
+        if (createdFireStation) {
+            dataLoader.saveData();
+        }
         return fireStation;
     }
 
@@ -34,14 +38,21 @@ public class FireStationRepository {
         for (FireStation fs : dataLoader.getFirestations()) {
             if (fs.getAddress().equals(fireStation.getAddress())){
                 fs.setStation(fireStation.getStation());
+                dataLoader.saveData();
                 return fs;
             }
         }
         return null;
     }
 
-    public boolean deleteFireStation(String address) {
-        return dataLoader.getFirestations().removeIf(fs -> fs.getAddress().equals(address));
+    public Optional<Boolean> deleteFireStation(String address) {
+        boolean deletedFireStation = dataLoader.getFirestations().removeIf(fs -> fs.getAddress().equals(address));
+        if (deletedFireStation) {
+            dataLoader.saveData();
+            return Optional.of(true);
+        } else {
+            return Optional.empty();
+        }
     }
 
 }
