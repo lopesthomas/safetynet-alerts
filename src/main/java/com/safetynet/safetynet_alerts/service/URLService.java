@@ -1,6 +1,7 @@
 package com.safetynet.safetynet_alerts.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.safetynet.safetynet_alerts.controller.URLController;
 import com.safetynet.safetynet_alerts.dto.FireResponseDTO;
+import com.safetynet.safetynet_alerts.dto.FloodResponseDTO;
 import com.safetynet.safetynet_alerts.model.FireStation;
 import com.safetynet.safetynet_alerts.model.MedicalRecord;
 import com.safetynet.safetynet_alerts.model.Person;
@@ -63,12 +65,44 @@ public class URLService {
     
     }
 
-    // public List<FireResponseDTO> getPersonsInfoByFireStationNumber(List<Integer> stations) {
-    //     List<FireResponseDTO> reponseList = stations.stream()
-    //     .flatMap(stations -> fireStationRepository.getAllFireStations().stream()
-    //         .filter(f -> f.getStation() == stations))
+    public List<FloodResponseDTO> getHouseholdsByFireStations(List<Integer> stationNumbers) {
+        List<String> coveredAddresses = fireStationRepository.getAllFireStations().stream()
+            .filter(f -> stationNumbers.contains(f.getStation()))
+            .map(FireStation::getAddress)
+            .distinct()
+            .collect(Collectors.toList());
 
-    // }
+        Map<String, List<FireResponseDTO>> households = coveredAddresses.stream()
+            .collect(Collectors.toMap(
+                address -> address,
+                address -> personRepository.getAllPersons().stream()
+                    .filter(person -> person.getAddress().equalsIgnoreCase(address))
+                    .map(person -> {
+                        Optional<MedicalRecord> medicalRecord = medicalRecordRepository.getAllMedicalRecords().stream()
+                            .filter(m -> m.getFirstName().equalsIgnoreCase(person.getFirstName()) &&
+                                         m.getLastName().equalsIgnoreCase(person.getLastName()))
+                            .findFirst();
+
+                        return new FireResponseDTO(
+                            person.getFirstName(),
+                            person.getLastName(),
+                            person.getPhone(),
+                            null,
+                            personService.getAge(person.getFirstName(), person.getLastName()),
+                            medicalRecord.map(MedicalRecord::getMedications).orElse(List.of()),
+                            medicalRecord.map(MedicalRecord::getAllergies).orElse(List.of()),
+                            null
+                        );
+                    })
+                    .collect(Collectors.toList())
+            ));
+            logger.info("Households {} for this station {}", households, stationNumbers);
+
+        return households.entrySet().stream()
+            .map(entry -> new FloodResponseDTO(stationNumbers.toString(), entry.getKey(), entry.getValue()))
+            .collect(Collectors.toList());
+    }
+
 
     public ResponseEntity<List<FireResponseDTO>> getPersonInfoByLastName(String lastName) {
         List<Person> listedPerson = personRepository.getAllPersons().stream()
@@ -89,18 +123,23 @@ public class URLService {
                 personService.getAge(person.getFirstName(), person.getLastName()),
                 medicalRecord.map(MedicalRecord::getMedications).orElse(List.of()),
                 medicalRecord.map(MedicalRecord::getAllergies).orElse(List.of()),
-                null // Pas de caserne ici donc on peut mettre null
+                null
             );
         }).collect(Collectors.toList());
+        logger.info("Persons {} for this lastname {}", responseList, lastName);
+
     
         return ResponseEntity.ok(responseList);
     }
 
     public List<String> getEmailByCity(String city) {
-        return personRepository.getAllPersons().stream()
+        List<String> emails = personRepository.getAllPersons().stream()
         .filter(p -> p.getCity().equalsIgnoreCase(city))
         .map(Person::getEmail)
         .collect(Collectors.toList());
+        logger.info("Emails {} for this city {}", emails, city);
+
+        return emails;
     }
 
 }

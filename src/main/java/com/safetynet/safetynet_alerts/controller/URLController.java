@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynet.safetynet_alerts.dto.ChildAlertDTO;
 import com.safetynet.safetynet_alerts.dto.FireResponseDTO;
+import com.safetynet.safetynet_alerts.dto.FloodResponseDTO;
 import com.safetynet.safetynet_alerts.service.FireStationService;
 import com.safetynet.safetynet_alerts.service.PersonService;
 import com.safetynet.safetynet_alerts.service.URLService;
@@ -47,9 +48,9 @@ public class URLController {
     }
 
     @GetMapping("flood/stations")
-    public List<FireResponseDTO> getPersonsByFireStationAdress(@RequestParam List<Integer> stations) {
+    public List<FloodResponseDTO> getPersonsByFireStationAdress(@RequestParam List<Integer> stations) {
         logger.debug("Request: GET /flood/stations?stations=<station_number>", stations);
-        return null;
+        return urlService.getHouseholdsByFireStations(stations);
     }
 
     @GetMapping("/personInfolastName={lastName}")
