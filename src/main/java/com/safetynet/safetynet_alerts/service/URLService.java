@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.safetynet.safetynet_alerts.controller.URLController;
 import com.safetynet.safetynet_alerts.dto.FireResponseDTO;
 import com.safetynet.safetynet_alerts.dto.FloodResponseDTO;
 import com.safetynet.safetynet_alerts.model.FireStation;
