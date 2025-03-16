@@ -63,10 +63,24 @@ class FireStationRepositoryTest {
     }
 
     @Test
+    void testBadUpdateFireStation() {
+        FireStation updatedFireStation = new FireStation("Address3", 4);
+        FireStation result = fireStationRepository.updateFireStation(updatedFireStation);
+        assertNull(result);
+        verify(dataLoader, never()).saveData();
+    }
+
+    @Test
     void testDeleteFireStation() {
         Optional<Boolean> result = fireStationRepository.deleteFireStation("Address1");
         assertTrue(result.isPresent());
         assertTrue(result.get());
         verify(dataLoader, times(1)).saveData();
+    }
+
+    @Test void testBadDeleteFireStation() {
+        Optional<Boolean> result = fireStationRepository.deleteFireStation("Address3");
+        assertTrue(result.isEmpty());
+        verify(dataLoader, never()).saveData();
     }
 }
