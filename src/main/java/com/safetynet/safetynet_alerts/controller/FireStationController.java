@@ -31,26 +31,22 @@ public class FireStationController {
 
     @GetMapping
     public FireStationResponseDTO getCoveredPersons(@RequestParam int stationNumber) {
-        //TODO: process POST request
         return fireStationService.getPersonsCoveredByStation(stationNumber);
     }
 
     @GetMapping("/all")
     public List<FireStation> getFireStations() {
-        //TODO: process POST request
         return fireStationService.getFireStations();
     }
 
     @PostMapping
     public ResponseEntity<FireStation> createFireStation(@RequestBody FireStation fireStation) {
-        //TODO: process POST request
         FireStation createdFireStation = fireStationService.addFireStation(fireStation);
         return ResponseEntity.ok(createdFireStation);
     }
 
     @PutMapping
     public ResponseEntity<FireStation> updateFireStation(@RequestBody FireStation firestation) {
-        //TODO: process PUT request
         FireStation updatedFireStation = fireStationService.updateFireStation(firestation);
         if (updatedFireStation != null) {
             return ResponseEntity.ok(updatedFireStation);
