@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,20 +30,39 @@ public class URLController {
 
     @GetMapping("/childAlert")
     public List<ChildAlertDTO> getChildrenAtAdress(@RequestParam String address) {
-        logger.info("Request: GET /childAlert?address=<address>" , address);
+        logger.debug("Request: GET /childAlert?address=<address>" , address);
         return personService.getChildrenAtAddress(address);
     }
 
     @GetMapping("/phoneAlert")
     public List<String> getPhoneNumberByFireStation(@RequestParam int stationNumber) {
-        logger.info("Request: GET /phoneAlert?firestation=<firestation_number>" , stationNumber);
+        logger.debug("Request: GET /phoneAlert?firestation=<firestation_number>" , stationNumber);
         return fireStationService.getPhoneNumberByStationNumber(stationNumber);
     }
 
     @GetMapping("/fire")
     public ResponseEntity<List<FireResponseDTO>> getPersonsByAddress(@RequestParam String address) {
-        logger.info("Request: GET /fire?address=<address>", address);
+        logger.debug("Request: GET /fire?address=<address>", address);
         return urlService.getPersonsByAddress(address);
     }
+
+    @GetMapping("flood/stations")
+    public List<FireResponseDTO> getPersonsByFireStationAdress(@RequestParam List<Integer> stations) {
+        logger.debug("Request: GET /flood/stations?stations=<station_number>", stations);
+        return null;
+    }
+
+    @GetMapping("/personInfolastName={lastName}")
+    public ResponseEntity<List<FireResponseDTO>> getPersonInfoByLastName(@PathVariable String lastName) {
+        logger.debug("Request: GET /personInfolastName=<lastName>", lastName);
+        return urlService.getPersonInfoByLastName(lastName);
+    }
+
+    @GetMapping("/communityEmail")
+    public List<String> getEmailByCity(@RequestParam String city) {
+        logger.debug("Request: GET /communityEmail?city=<city>", city);
+        return urlService.getEmailByCity(city);
+    }
+
 
 }
