@@ -56,7 +56,7 @@ public class URLController {
     @GetMapping("/personInfolastName={lastName}")
     public ResponseEntity<List<FireResponseDTO>> getPersonInfoByLastName(@PathVariable String lastName) {
         logger.debug("Request: GET /personInfolastName=<lastName>", lastName);
-        return urlService.getPersonInfoByLastName(lastName);
+        return urlService.getPersonByLastName(lastName);
     }
 
     @GetMapping("/communityEmail")

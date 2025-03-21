@@ -58,7 +58,7 @@ public class URLService {
                 fireStationCoveredPersons.orElse(null) // si aucune caserne trouvée
             );
         }).collect(Collectors.toList());
-        logger.info("Persons {} for this address {}", responseList, address);
+        logger.debug("Persons {} for this address {}", responseList, address);
 
         return ResponseEntity.ok(responseList);
     
@@ -95,7 +95,7 @@ public class URLService {
                     })
                     .collect(Collectors.toList())
             ));
-            logger.info("Households {} for this station {}", households, stationNumbers);
+            logger.debug("Households {} for this station {}", households, stationNumbers);
 
         return households.entrySet().stream()
             .map(entry -> new FloodResponseDTO(stationNumbers.toString(), entry.getKey(), entry.getValue()))
@@ -103,7 +103,7 @@ public class URLService {
     }
 
 
-    public ResponseEntity<List<FireResponseDTO>> getPersonInfoByLastName(String lastName) {
+    public ResponseEntity<List<FireResponseDTO>> getPersonByLastName(String lastName) {
         List<Person> listedPerson = personRepository.getAllPersons().stream()
         .filter(p -> p.getLastName().equalsIgnoreCase(lastName))
         .collect(Collectors.toList());
@@ -125,7 +125,7 @@ public class URLService {
                 null
             );
         }).collect(Collectors.toList());
-        logger.info("Persons {} for this lastname {}", responseList, lastName);
+        logger.debug("Persons {} for this lastname {}", responseList, lastName);
 
     
         return ResponseEntity.ok(responseList);
@@ -136,7 +136,7 @@ public class URLService {
         .filter(p -> p.getCity().equalsIgnoreCase(city))
         .map(Person::getEmail)
         .collect(Collectors.toList());
-        logger.info("Emails {} for this city {}", emails, city);
+        logger.debug("Emails {} for this city {}", emails, city);
 
         return emails;
     }
