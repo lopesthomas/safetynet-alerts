@@ -15,5 +15,5 @@ public class FloodResponseDTO {
     @JsonProperty("stationNumber")
     private String station;
     private String address;
-    private List<FireResponseDTO> residents;
+    private List<PersonResponseDTO> residents;
 }

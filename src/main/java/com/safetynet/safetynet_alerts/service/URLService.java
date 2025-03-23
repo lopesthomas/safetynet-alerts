@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.safetynet.safetynet_alerts.dto.FireResponseDTO;
+import com.safetynet.safetynet_alerts.dto.PersonResponseDTO;
 import com.safetynet.safetynet_alerts.dto.FloodResponseDTO;
 import com.safetynet.safetynet_alerts.model.FireStation;
 import com.safetynet.safetynet_alerts.model.MedicalRecord;
@@ -33,7 +33,7 @@ public class URLService {
 
     private static Logger logger = LoggerFactory.getLogger(URLService.class);
 
-    public ResponseEntity<List<FireResponseDTO>> getPersonsByAddress(String address) {
+    public ResponseEntity<List<PersonResponseDTO>> getPersonsByAddress(String address) {
         List<Person> residents = personRepository.getAllPersons().stream()
         .filter(p -> p.getAddress().equalsIgnoreCase(address))
         .collect(Collectors.toList());
@@ -42,12 +42,12 @@ public class URLService {
         .filter(f -> f.getAddress().equalsIgnoreCase(address))
         .map(f -> f.getStation()).findFirst();
 
-        List<FireResponseDTO> responseList = residents.stream().map(person -> {
+        List<PersonResponseDTO> responseList = residents.stream().map(person -> {
             Optional<MedicalRecord> medicalRecord = medicalRecordRepository.getAllMedicalRecords().stream()
                 .filter(m -> m.getFirstName().equalsIgnoreCase(person.getFirstName()) &&
                              m.getLastName().equalsIgnoreCase(person.getLastName()))
                 .findFirst();
-            return new FireResponseDTO(
+            return new PersonResponseDTO(
                 person.getFirstName(),
                 person.getLastName(),
                 person.getPhone(),
@@ -71,7 +71,7 @@ public class URLService {
             .distinct()
             .collect(Collectors.toList());
 
-        Map<String, List<FireResponseDTO>> households = coveredAddresses.stream()
+        Map<String, List<PersonResponseDTO>> households = coveredAddresses.stream()
             .collect(Collectors.toMap(
                 address -> address,
                 address -> personRepository.getAllPersons().stream()
@@ -82,7 +82,7 @@ public class URLService {
                                          m.getLastName().equalsIgnoreCase(person.getLastName()))
                             .findFirst();
 
-                        return new FireResponseDTO(
+                        return new PersonResponseDTO(
                             person.getFirstName(),
                             person.getLastName(),
                             person.getPhone(),
@@ -103,18 +103,18 @@ public class URLService {
     }
 
 
-    public ResponseEntity<List<FireResponseDTO>> getPersonByLastName(String lastName) {
+    public ResponseEntity<List<PersonResponseDTO>> getPersonByLastName(String lastName) {
         List<Person> listedPerson = personRepository.getAllPersons().stream()
         .filter(p -> p.getLastName().equalsIgnoreCase(lastName))
         .collect(Collectors.toList());
 
-        List<FireResponseDTO> responseList = listedPerson.stream().map(person -> {
+        List<PersonResponseDTO> responseList = listedPerson.stream().map(person -> {
             Optional<MedicalRecord> medicalRecord = medicalRecordRepository.getAllMedicalRecords().stream()
                 .filter(m -> m.getFirstName().equalsIgnoreCase(person.getFirstName()) &&
                              m.getLastName().equalsIgnoreCase(person.getLastName()))
                 .findFirst();
     
-            return new FireResponseDTO(
+            return new PersonResponseDTO(
                 person.getFirstName(),
                 person.getLastName(),
                 null,

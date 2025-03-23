@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynet.safetynet_alerts.dto.ChildAlertDTO;
-import com.safetynet.safetynet_alerts.dto.FireResponseDTO;
+import com.safetynet.safetynet_alerts.dto.PersonResponseDTO;
 import com.safetynet.safetynet_alerts.dto.FloodResponseDTO;
 import com.safetynet.safetynet_alerts.service.FireStationService;
 import com.safetynet.safetynet_alerts.service.PersonService;
@@ -42,7 +42,7 @@ public class URLController {
     }
 
     @GetMapping("/fire")
-    public ResponseEntity<List<FireResponseDTO>> getPersonsByAddress(@RequestParam String address) {
+    public ResponseEntity<List<PersonResponseDTO>> getPersonsByAddress(@RequestParam String address) {
         logger.debug("Request: GET /fire?address=<address>", address);
         return urlService.getPersonsByAddress(address);
     }
@@ -54,7 +54,7 @@ public class URLController {
     }
 
     @GetMapping("/personInfolastName={lastName}")
-    public ResponseEntity<List<FireResponseDTO>> getPersonInfoByLastName(@PathVariable String lastName) {
+    public ResponseEntity<List<PersonResponseDTO>> getPersonInfoByLastName(@PathVariable String lastName) {
         logger.debug("Request: GET /personInfolastName=<lastName>", lastName);
         return urlService.getPersonByLastName(lastName);
     }

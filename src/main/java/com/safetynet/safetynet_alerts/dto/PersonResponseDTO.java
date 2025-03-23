@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FireResponseDTO {
+public class PersonResponseDTO {
     private String firstName;
     private String lastName;
     private String phone;

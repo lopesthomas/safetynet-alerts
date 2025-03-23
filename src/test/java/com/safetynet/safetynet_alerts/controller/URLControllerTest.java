@@ -1,9 +1,8 @@
 package com.safetynet.safetynet_alerts.controller;
 
 import com.safetynet.safetynet_alerts.dto.ChildAlertDTO;
-import com.safetynet.safetynet_alerts.dto.FireResponseDTO;
+import com.safetynet.safetynet_alerts.dto.PersonResponseDTO;
 import com.safetynet.safetynet_alerts.dto.FloodResponseDTO;
-import com.safetynet.safetynet_alerts.model.Person;
 import com.safetynet.safetynet_alerts.service.FireStationService;
 import com.safetynet.safetynet_alerts.service.PersonService;
 import com.safetynet.safetynet_alerts.service.URLService;
@@ -37,7 +36,7 @@ class URLControllerTest {
 
     private List<ChildAlertDTO> childAlertDTOs;
     private List<String> phoneNumbers;
-    private List<FireResponseDTO> fireResponseDTOs;
+    private List<PersonResponseDTO> fireResponseDTOs;
     private List<FloodResponseDTO> floodResponseDTOs;
 
     @BeforeEach
@@ -66,7 +65,7 @@ class URLControllerTest {
     @Test
     void testGetPersonsByAddress() {
         when(urlService.getPersonsByAddress("Address1")).thenReturn(ResponseEntity.ok(fireResponseDTOs));
-        ResponseEntity<List<FireResponseDTO>> response = urlController.getPersonsByAddress("Address1");
+        ResponseEntity<List<PersonResponseDTO>> response = urlController.getPersonsByAddress("Address1");
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(fireResponseDTOs, response.getBody());
     }
@@ -81,7 +80,7 @@ class URLControllerTest {
     @Test
     void testGetPersonInfoByLastName() {
         when(urlService.getPersonByLastName("Doe")).thenReturn(ResponseEntity.ok(fireResponseDTOs));
-        ResponseEntity<List<FireResponseDTO>> response = urlController.getPersonInfoByLastName("Doe");
+        ResponseEntity<List<PersonResponseDTO>> response = urlController.getPersonInfoByLastName("Doe");
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(fireResponseDTOs, response.getBody());
     }
