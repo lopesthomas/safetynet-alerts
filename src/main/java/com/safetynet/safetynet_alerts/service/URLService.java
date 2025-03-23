@@ -1,5 +1,6 @@
 package com.safetynet.safetynet_alerts.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -65,12 +66,12 @@ public class URLService {
     }
 
     public List<FloodResponseDTO> getHouseholdsByFireStations(List<Integer> stationNumbers) {
-        List<String> coveredAddresses = fireStationRepository.getAllFireStations().stream()
+        Map<String, Integer> addressToStationMap = fireStationRepository.getAllFireStations().stream()
             .filter(f -> stationNumbers.contains(f.getStation()))
-            .map(FireStation::getAddress)
-            .distinct()
-            .collect(Collectors.toList());
+            .collect(Collectors.toMap(FireStation::getAddress, FireStation::getStation, (s1, s2) -> s1));
 
+        List<String> coveredAddresses = new ArrayList<>(addressToStationMap.keySet());
+        
         Map<String, List<PersonResponseDTO>> households = coveredAddresses.stream()
             .collect(Collectors.toMap(
                 address -> address,
@@ -98,7 +99,7 @@ public class URLService {
             logger.debug("Households {} for this station {}", households, stationNumbers);
 
         return households.entrySet().stream()
-            .map(entry -> new FloodResponseDTO(stationNumbers.toString(), entry.getKey(), entry.getValue()))
+            .map(entry -> new FloodResponseDTO(addressToStationMap.get(entry.getKey()).toString(), entry.getKey(), entry.getValue()))
             .collect(Collectors.toList());
     }
 

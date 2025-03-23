@@ -3,6 +3,8 @@ package com.safetynet.safetynet_alerts.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ public class FireStationService {
     private PersonRepository personRepository;
     @Autowired
     private PersonService personService;
+
+    private static Logger logger = LoggerFactory.getLogger(FireStationService.class);
 
     public List<FireStation> getFireStations() {
         return fireStationRepository.getAllFireStations();
@@ -63,6 +67,7 @@ public class FireStationService {
        System.out.println("StationNumber: " + stationNumber);
        System.out.println("Adults: " + adults);
        System.out.println("Childrens: " + children);
+       logger.debug("Persons covered by station {} : {}", stationNumber, persons);
        
        return new FireStationResponseDTO(persons, adults, children);
    }
@@ -73,10 +78,13 @@ public class FireStationService {
         .map(FireStation::getAddress)
         .collect(Collectors.toList());
 
-        return personRepository.getAllPersons().stream()
+        List<String> phoneList = personRepository.getAllPersons().stream()
                 .filter(p -> coveredAddresses.contains(p.getAddress()))
                 .map(Person::getPhone)
                 .collect(Collectors.toList());
+        
+        logger.debug("Phone numbers covered by station {} : {}", stationNumber, phoneList);
+        return phoneList;
     }
      
 }

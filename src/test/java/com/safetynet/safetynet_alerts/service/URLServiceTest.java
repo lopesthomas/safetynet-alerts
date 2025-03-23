@@ -78,12 +78,11 @@ class URLServiceTest {
         assertEquals(1, result.size());
         assertEquals("Address1", result.get(0).getAddress());
         assertEquals("John", result.get(0).getResidents().get(0).getFirstName());
+        assertEquals("1", result.get(0).getStation());
     }
 
     @Test
     void testGetPersonByLastName() {
-        when(personService.getAge("Doe", "Doe")).thenReturn(25);
-
         ResponseEntity<List<PersonResponseDTO>> response = urlService.getPersonByLastName("Doe");
         assertEquals(HttpStatus.OK, response.getStatusCode());
         List<PersonResponseDTO> responseList = response.getBody();

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,8 @@ public class PersonService {
     private MedicalRecordRepository medicalRecordRepository;
     @Autowired
     private PersonRepository personRepository;
+
+    private static Logger logger = LoggerFactory.getLogger(PersonService.class);
 
     public int getAge(String firstName, String lastName) {
         return medicalRecordRepository.getAllMedicalRecords().stream()
@@ -67,6 +71,7 @@ public class PersonService {
                 children.add(new ChildAlertDTO(person.getFirstName(), person.getLastName(), age, houseMembers));
             }
         }
+        logger.debug("Children found at address {} : {}", address, children);
         return children;
     }
 }
