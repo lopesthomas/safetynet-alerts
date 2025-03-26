@@ -30,7 +30,6 @@ public class FireStationService {
     }
 
     public List<FireStation> findByStationNumber(int stationNumber) {
-        // Récupère les adresses couvertes par cette station
     return fireStationRepository.getAllFireStations().stream()
             .filter(f -> f.getStation() == stationNumber)
             .collect(Collectors.toList());
@@ -64,9 +63,6 @@ public class FireStationService {
        int adults = (int) persons.stream().filter(p -> personService.getAge(p.getFirstName(), p.getLastName()) >= 18).count();
        int children = persons.size() - adults;
 
-       System.out.println("StationNumber: " + stationNumber);
-       System.out.println("Adults: " + adults);
-       System.out.println("Childrens: " + children);
        logger.debug("Persons covered by station {} : {}", stationNumber, persons);
        
        return new FireStationResponseDTO(persons, adults, children);

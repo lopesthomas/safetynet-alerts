@@ -128,14 +128,38 @@
 						</goals>
 					</execution>
 					<execution>
-						<id>default-report</id>
+						<id>report</id>
+						<phase>verify</phase>
 						<goals>
-							<goal>report</goal> <!-- Génère un rapport de couverture après les tests -->
+							<goal>report</goal>
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.21.0</version>
+				<configuration>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.jacoco</groupId>
+							<artifactId>jacoco-maven-plugin</artifactId>
+							<version>0.8.12</version>
+						</plugin>
+					</reportPlugins>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
+			</plugin>
+		</plugins>
+	</reporting>
 
 </project>
